@@ -110,7 +110,7 @@ BYTE controlNum(BYTE num)
 
 PYUV bmp_RGBtoYUV(const BITMAPINFOHEADER infoHeader, PRGB rgbData)
 {
-    int biSize = infoHeader.biSizeImage / 3;
+    int biSize = ABS(infoHeader.biWidth * infoHeader.biHeight);
     PYUV yuvData = (PYUV)malloc(sizeof(YUV) * biSize);
 
     int i;
@@ -125,7 +125,7 @@ PYUV bmp_RGBtoYUV(const BITMAPINFOHEADER infoHeader, PRGB rgbData)
 PRGB bmp_RGBtoGray(const BITMAPINFOHEADER infoHeader, PYUV yuvData)
 {
     PRGB gray;
-    int biSize = infoHeader.biSizeImage / 3;
+    int biSize = ABS(infoHeader.biWidth * infoHeader.biHeight);
     
     int i;
     gray = (PRGB)malloc(sizeof(RGB) * biSize);
@@ -167,7 +167,7 @@ int main(void)
     PRGB rgbChanged = (PRGB)malloc(sizeof(RGB) * biSize);
     for (i = 0; i < biSize; i++)
     {
-        yuvData[i].Y = controlNum((BYTE)(yuvData[i].Y + 50));
+        yuvData[i].Y = controlNum((BYTE)(yuvData[i].Y + 10));
         rgbChanged[i].RED = controlNum((BYTE)(yuvData[i].Y+ 1.402 * (yuvData[i].V - 128)));
         rgbChanged[i].GREEN = controlNum((BYTE)(yuvData[i].Y - 0.34414 * (yuvData[i].U - 128) - 0.71414 * (yuvData[i].V - 128)));
         rgbChanged[i].BLUE = controlNum((BYTE)(yuvData[i].Y + 1.772 * (yuvData[i].U - 128)));
